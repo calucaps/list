@@ -211,6 +211,8 @@ int main(int argc, char **argv) {
 	
 	destroyList(list1);
 
+	printf("the end\n");
+
 } 
 
 
