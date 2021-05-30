@@ -5,6 +5,8 @@
 
 
 #define MAXDATA 64
+#define INDEX_SIZE 1000
+
 typedef struct _node {
 	char data[MAXDATA];
 	struct _node *next;
@@ -14,6 +16,7 @@ typedef struct _node {
 typedef struct _list {
 	NODE *head;
 	NODE *tail;
+	NODE **index;
 } LIST;
 
 
@@ -71,7 +74,20 @@ NODE *popNode(LIST *list) {
 LIST *createList() {
 
 	LIST *list = calloc(1,sizeof(LIST));
+	list->index = calloc(INDEX_SIZE,sizeof(NODE *));
         return list;	
+}
+
+NODE ** indexList(LIST *list){
+        NODE *node = list->head;
+	memset(list->index,0,sizeof(NODE *) * INDEX_SIZE);
+	int ii = 0;
+	while(node != NULL) {
+		list->index[ii] = node;
+		node = node->next;
+		ii++;
+	}
+	return list->index;
 }
 
 void dumpList(LIST *list) {
@@ -94,7 +110,7 @@ void dumpListReverse(LIST *list) {
 NODE *findNode(LIST *list, char *data) {
         NODE *node = list->head;
 	while(node != NULL) {
-                if (strncmp(data,node->data,MAXDATA) == 0) {
+        if (strncmp(data,node->data,MAXDATA) == 0) {
 			return node;
 		}
 		node = node->next;
@@ -132,8 +148,24 @@ void createRandomData(char *data, size_t size){
 	}
 }
 
-int main(int argc, char **argv) {
+LIST *createListWithRandomElements(int size, int datasize){
+	
+	LIST *list = createList();
 
+	char buff[MAXDATA];
+
+	for(int jj = 0; jj < size; jj++) {
+		memset(buff,0,MAXDATA);
+		createRandomData(buff,datasize);
+	    NODE *node = createNodeWithData(buff);
+		appendNode(list,node);
+	}
+
+	return list;
+
+}
+
+LIST *createTestList(int size){
 	LIST *list = createList();
 
 	NODE *head = createNodeWithData("head");
@@ -155,15 +187,24 @@ int main(int argc, char **argv) {
         
 	char buff[MAXDATA];
 
-	for (int ii = 0; ii < 110; ii++) {
+	for (int ii = 0; ii < size; ii++) {
 		sprintf(buff,"node %d",ii);
 		node = createNodeWithData(buff);
 		pushNode(list,node);		
 	}
 
+	return list;
+
+}
+
+int main(int argc, char **argv) {
+
+
+    LIST *list = createTestList(5);
+
 	dumpList(list);
 
-	node = popNode(list);
+	NODE *node = popNode(list);
 
 	free(node);
 
@@ -175,6 +216,9 @@ int main(int argc, char **argv) {
 
 	if (node != NULL) {
 		printf("found %s\n", node->data);
+	}
+	else {
+		printf("Not Found\n");
 	}
 
 	printf("----------------\n");
@@ -195,20 +239,25 @@ int main(int argc, char **argv) {
 	time_t t;
 	srand((unsigned) time(&t));
 
-	LIST *list1 = createList();
-
-	for(int jj = 0; jj < 12; jj++) {
-		memset(buff,0,MAXDATA);
-		createRandomData(buff,25);
-	        node = createNodeWithData(buff);
-		appendNode(list1,node);
-	}
+	
+    LIST *list1 = createListWithRandomElements(3,15);
 
 	dumpList(list1);
 
+
+
 	printf("----------------\n");
 	dumpListReverse(list1);
+        printf("Printing index\n");
 	
+	NODE **index = indexList(list1);
+
+	int kk = 0;
+	while(index[kk] != NULL) {
+		printf("idx %d %s\n", kk, index[kk]->data);
+		kk++;
+	}
+
 	destroyList(list1);
 
 	printf("the end\n");
