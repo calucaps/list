@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
         
 	char buff[MAXDATA];
 
-	for (int ii = 0; ii < 10; ii++) {
+	for (int ii = 0; ii < 110; ii++) {
 		sprintf(buff,"node %d",ii);
 		node = createNodeWithData(buff);
 		pushNode(list,node);		
@@ -197,9 +197,9 @@ int main(int argc, char **argv) {
 
 	LIST *list1 = createList();
 
-	for(int jj = 0; jj < 120; jj++) {
+	for(int jj = 0; jj < 12; jj++) {
 		memset(buff,0,MAXDATA);
-		createRandomData(buff,10);
+		createRandomData(buff,25);
 	        node = createNodeWithData(buff);
 		appendNode(list1,node);
 	}
