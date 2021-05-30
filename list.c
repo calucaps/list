@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
 
 	LIST *list1 = createList();
 
-	for(int jj = 0; jj < 10; jj++) {
+	for(int jj = 0; jj < 120; jj++) {
 		memset(buff,0,MAXDATA);
 		createRandomData(buff,10);
 	        node = createNodeWithData(buff);
