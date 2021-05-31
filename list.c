@@ -224,6 +224,10 @@ void dumpListIndex(LIST *list){
 
 }
 
+void sep(){
+	printf("----------------\n");
+}
+
 int main(int argc, char **argv) {
 
 
@@ -235,7 +239,8 @@ int main(int argc, char **argv) {
 
 	free(node);
 
-	printf("----------------\n");
+	sep();
+
 
 	dumpList(list);
 
@@ -248,11 +253,11 @@ int main(int argc, char **argv) {
 		printf("Not Found\n");
 	}
 
-	printf("----------------\n");
+	sep();
 
 	dumpListReverse(list);
 
-	printf("----------------\n");
+	sep();
 
 	removeNode(list,"node 4");
 
@@ -261,7 +266,7 @@ int main(int argc, char **argv) {
 	destroyList(list);
 
 
-	printf("----------------\n");
+	sep();
 
 	time_t t;
 	srand((unsigned) time(&t));
@@ -272,8 +277,8 @@ int main(int argc, char **argv) {
 	dumpList(list1);
 
 
+    sep();
 
-	printf("----------------\n");
 	dumpListReverse(list1);
         printf("Printing index\n");
 	
@@ -281,11 +286,11 @@ int main(int argc, char **argv) {
 
 	printf("size %d\n",list1->size);
 
-	printf("----------------\n");
+    sep();
 
 	dumpListIndex(list1);
 
-	printf("sorted----------\n");
+    sep();
 
 	index = sortListIndex(list1);
 
