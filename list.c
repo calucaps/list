@@ -17,6 +17,7 @@ typedef struct _list {
 	NODE *head;
 	NODE *tail;
 	NODE **index;
+	int  size;
 } LIST;
 
 
@@ -87,6 +88,9 @@ NODE ** indexList(LIST *list){
 		node = node->next;
 		ii++;
 	}
+
+	list->size = ii;
+	
 	return list->index;
 }
 
@@ -197,6 +201,15 @@ LIST *createTestList(int size){
 
 }
 
+int comparator (const void * p1, const void * p2)
+{
+	NODE *n1 = *(NODE**)p1;
+	NODE *n2 = *(NODE**)p2;
+
+	//printf("d1 %s - d2 %s\n",n1->data,n2->data);
+	return strncmp(n1->data,n2->data,MAXDATA);
+}
+
 int main(int argc, char **argv) {
 
 
@@ -240,7 +253,7 @@ int main(int argc, char **argv) {
 	srand((unsigned) time(&t));
 
 	
-    LIST *list1 = createListWithRandomElements(3,15);
+    LIST *list1 = createListWithRandomElements(10,15);
 
 	dumpList(list1);
 
@@ -252,11 +265,26 @@ int main(int argc, char **argv) {
 	
 	NODE **index = indexList(list1);
 
+	printf("size %d\n",list1->size);
+
+	printf("----------------\n");
+
 	int kk = 0;
 	while(index[kk] != NULL) {
 		printf("idx %d %s\n", kk, index[kk]->data);
 		kk++;
 	}
+
+	printf("sorted----------\n");
+
+	qsort(list1->index, list1->size, sizeof(NODE *),comparator);
+
+	kk = 0;
+	while(index[kk] != NULL) {
+		printf("idx %d %s\n", kk, index[kk]->data);
+		kk++;
+	}
+
 
 	destroyList(list1);
 
