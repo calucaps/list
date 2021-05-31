@@ -203,11 +203,25 @@ LIST *createTestList(int size){
 
 int comparator (const void * p1, const void * p2)
 {
-	NODE *n1 = *(NODE**)p1;
-	NODE *n2 = *(NODE**)p2;
+	NODE *n1 = *(NODE**)p2;
+	NODE *n2 = *(NODE**)p1;
 
 	//printf("d1 %s - d2 %s\n",n1->data,n2->data);
 	return strncmp(n1->data,n2->data,MAXDATA);
+}
+
+NODE **sortListIndex(LIST *list) {
+	qsort(list->index, list->size, sizeof(NODE *),comparator);
+	return list->index;
+}
+
+void dumpListIndex(LIST *list){
+	int kk = 0;
+	while(list->index[kk] != NULL) {
+		printf("idx %d %s\n", kk, list->index[kk]->data);
+		kk++;
+	}
+
 }
 
 int main(int argc, char **argv) {
@@ -253,7 +267,7 @@ int main(int argc, char **argv) {
 	srand((unsigned) time(&t));
 
 	
-    LIST *list1 = createListWithRandomElements(10,15);
+    LIST *list1 = createListWithRandomElements(30,15);
 
 	dumpList(list1);
 
@@ -269,21 +283,13 @@ int main(int argc, char **argv) {
 
 	printf("----------------\n");
 
-	int kk = 0;
-	while(index[kk] != NULL) {
-		printf("idx %d %s\n", kk, index[kk]->data);
-		kk++;
-	}
+	dumpListIndex(list1);
 
 	printf("sorted----------\n");
 
-	qsort(list1->index, list1->size, sizeof(NODE *),comparator);
+	index = sortListIndex(list1);
 
-	kk = 0;
-	while(index[kk] != NULL) {
-		printf("idx %d %s\n", kk, index[kk]->data);
-		kk++;
-	}
+	dumpListIndex(list1);
 
 
 	destroyList(list1);
